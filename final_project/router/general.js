@@ -66,6 +66,25 @@ public_users.get('/author/:author', function (req, res) {
   }
   return res.status(404).json({ message: "No books found for this author" });
 });
+// Task 11: Get book details based on ISBN using async-await with Axios
+public_users.get('/async/isbn/:isbn', async function (req, res) {
+  try {
+    const isbn = req.params.isbn;
+    const response = await axios.get(`${req.protocol}://${req.get('host')}/isbn/${isbn}`);
+    const data = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+    return res.status(200).send(JSON.stringify(data, null, 4));
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+    return res.status(500).json({ message: "Error fetching book details", error: error.message });
+  }
+});
+
+// Get book details based on author (later task)
+public_users.get('/author/:author', function (req, res) {
+  // ...your existing author code stays as it is
+});
 
 // Get all books based on title (later task)
 public_users.get('/title/:title', function (req, res) {
