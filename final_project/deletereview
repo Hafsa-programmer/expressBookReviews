@@ -1,0 +1,5 @@
+curl -X POST localhost:5000/register -H "Content-Type: application/json" -d '{"username":"user1","password":"pass1"}'
+{"message":"User successfully registered. Now you can lotheia@theia-hafsasiddqui:/home/project$ curl -c cookies.txt -X POST localhost:5000/customer/login -H "Content-Type: application/json" -d '{"username":"user1","password":"pass1"}'
+theia@theia-hafsasiddqui:/home/project$ curl -b cookies.txt -X PUT "localhost:5000/customer/auth/review/1?review=Great%20book"
+{"message":"Review for ISBN 1 added","reviews":{"user1":"Great book"}}theia@theia-hafsasiddqui:/curl -b cookies.txt -X DELETE localhost:5000/customer/auth/review/1
+{"message":"Review for ISBN 1 posted by user1 deleted","reviews":{}}
