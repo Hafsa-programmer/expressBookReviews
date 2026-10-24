@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
@@ -21,9 +22,20 @@ public_users.post("/register", (req, res) => {
   return res.status(201).json({ message: "User successfully registered. Now you can login" });
 });
 
-// Task 1: Get the book list available in the shop
 public_users.get('/', function (req, res) {
   return res.status(200).send(JSON.stringify(books, null, 4));
+});
+
+
+// Task 10: Get the book list using async-await with Axios
+public_users.get('/async/books', async function (req, res) {
+  try {
+    const response = await axios.get('http://localhost:5000/');
+    const data = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+    return res.status(200).send(JSON.stringify(data, null, 4));
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching the book list", error: error.message });
+  }
 });
 
 
