@@ -113,7 +113,7 @@ public_users.get('/async/author/:author', async function (req, res) {
     return res.status(500).json({ message: "Error fetching books by author", error: error.message });
   }
 });
-// Get all books based on title (later task)
+// Get all books based on title 
 public_users.get('/title/:title', function (req, res) {
   const title = req.params.title;
   const keys = Object.keys(books);
@@ -129,6 +129,20 @@ public_users.get('/title/:title', function (req, res) {
     return res.status(200).send(JSON.stringify({ booksbytitle: matches }, null, 4));
   }
   return res.status(404).json({ message: "No books found with this title" });
+});
+// Task 13: Get book details based on title using async-await with Axios
+public_users.get('/async/title/:title', async function (req, res) {
+  try {
+    const title = encodeURIComponent(req.params.title);
+    const response = await axios.get(`${req.protocol}://${req.get('host')}/title/${title}`);
+    const data = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+    return res.status(200).send(JSON.stringify(data, null, 4));
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return res.status(404).json({ message: "No books found with this title" });
+    }
+    return res.status(500).json({ message: "Error fetching books by title", error: error.message });
+  }
 });
 
 // Get book review (later task)
